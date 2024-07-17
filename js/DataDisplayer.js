@@ -31,8 +31,8 @@ class DataDisplayer extends LitElement {
     }
 
     th {
-      background-color: #007bff;
-      color: white;
+      background-color: #e2e8fc;
+      color: #2a2c3e;
     }
 
     tr:nth-child(even) {

@@ -73,19 +73,26 @@ class CustomModal extends LitElement {
       cursor: pointer;
       min-width: 100px;
       min-height: 56px;
-      padding: 2px;
-      border-color: black;
+      padding: 4px;
+
+      border-color: #e2e8fc;
       border-style: solid;
       border-radius: 4px;
       margin: 0 4px;
       font-weight: bold;
-      background: aliceblue;
+      background: white;
       transition: ease-in 100ms;
     }
 
     button:hover {
       scale: 1.1;
       transition: ease-in 100ms;
+    }
+
+    header {
+      color: #2a2c3e;
+      font-size: 16px;
+      font-weight: bold;
     }
   `;
 

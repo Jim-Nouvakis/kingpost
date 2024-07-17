@@ -74,7 +74,6 @@ class CustomModal extends LitElement {
       min-width: 100px;
       min-height: 56px;
       padding: 4px;
-
       border-color: #e2e8fc;
       border-style: solid;
       border-radius: 4px;

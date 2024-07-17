@@ -4,11 +4,11 @@ import {
   css,
 } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
-class FormValidator {
-  constructor() {}
-
-  static validateInputs;
-}
+import {
+  parseValues,
+  sendEventWithDataToParentComponent,
+  validateForm,
+} from "./customFormUtilities.js";
 
 class CustomForm extends LitElement {
   static styles = css`
@@ -17,14 +17,72 @@ class CustomForm extends LitElement {
       justify-content: center;
       flex-direction: column;
     }
+
+    input {
+      margin-top: 8px;
+    }
+
+    fieldset {
+      margin-top: 8px;
+    }
   `;
 
-  _submitForm = (e) => {
-    console.log("i was called");
-    e.preventDefault();
-    const form = this.shadowRoot.getElementById("myForm");
+  _validateFormAndGetValuesOfFormAndSendData = () => {
+    //we take all the values from the form. Then we perform some
+    //operations inside try, catch blocks to make sure that even
+    //if something accidental is turned into undefined or
+    // null the code doesn't break
+    const fname = this.shadowRoot.getElementById("fname").value;
+    let monsterFeatures = this.shadowRoot.querySelectorAll(".monster-feature");
+    const car = this.shadowRoot.getElementById("cars").value;
+    let maintenanceDrones =
+      this.shadowRoot.querySelectorAll(".maintenance-drone");
 
+    try {
+      monsterFeatures = Array.from(monsterFeatures);
+    } catch (e) {
+      console.error("CustomForm@line85");
+      monsterFeatures = [];
+    }
+
+    try {
+      maintenanceDrones = Array.from(maintenanceDrones);
+    } catch (e) {
+      console.error("CustomForm@line92");
+      maintenanceDrones = [];
+    }
+
+    const values = {
+      fname,
+      monsterFeatures,
+      car,
+      maintenanceDrones,
+    };
+
+    try {
+      if (validateForm(values)) {
+        const parsedValues = parseValues(values);
+        sendEventWithDataToParentComponent(parsedValues, this);
+      }
+    } catch (e) {
+      console.error("CustomForm@line52");
+    }
+  };
+
+  _triggerSubmitOfForm = () => {
+    this.shadowRoot.getElementById("myForm").submit();
+  };
+
+  _submitForm = (e) => {
+    e.preventDefault();
+    this._validateFormAndGetValuesOfFormAndSendData();
     return true;
+  };
+
+  _clearForm = () => {
+    console.log("here");
+    const form = this.shadowRoot.getElementById("myForm");
+    form.reset();
   };
 
   disableClosingOfSurroundingModal = new Event("disableClosingOfModal", {
@@ -34,32 +92,42 @@ class CustomForm extends LitElement {
 
   constructor(props) {
     super(props);
+    this.addEventListener("submitForm", this._triggerSubmitOfForm);
+    this.addEventListener("clearForm", this._clearForm.bind(this));
   }
 
   render() {
     return html`
       <form
-        method="post"
         @click="${() => {
           this.dispatchEvent(this.disableClosingOfSurroundingModal);
         }}"
+        @submit="${this._submitForm}"
         id="myForm"
-        @submit="${(e) => {
-          this._submitForm(e);
-        }}"
       >
         <label for="name">First Name</label>
-        <input type="text" id="name" required />
+        <input type="text" id="fname" required />
         <fieldset>
           <legend>Choose your monster's features:</legend>
 
           <div>
-            <input type="checkbox" id="scales" name="scales" checked />
+            <input
+              type="checkbox"
+              class="monster-feature"
+              id="scales"
+              name="scales"
+              checked
+            />
             <label for="scales">Scales</label>
           </div>
 
           <div>
-            <input type="checkbox" id="horns" name="horns" />
+            <input
+              type="checkbox"
+              class="monster-feature"
+              id="horns"
+              name="horns"
+            />
             <label for="horns">Horns</label>
           </div>
         </fieldset>
@@ -71,21 +139,40 @@ class CustomForm extends LitElement {
           <option value="opel">Opel</option>
           <option value="audi">Audi</option>
         </select>
-        <fieldset>
+        <fieldset id="maintenance-drones">
           <legend>Select a maintenance drone:</legend>
 
           <div>
-            <input type="radio" id="huey" name="drone" value="huey" checked />
+            <input
+              class="maintenance-drone"
+              type="radio"
+              id="huey"
+              name="drone"
+              value="huey"
+              checked
+            />
             <label for="huey">Huey</label>
           </div>
 
           <div>
-            <input type="radio" id="dewey" name="drone" value="dewey" />
+            <input
+              class="maintenance-drone"
+              type="radio"
+              id="dewey"
+              name="drone"
+              value="dewey"
+            />
             <label for="dewey">Dewey</label>
           </div>
 
           <div>
-            <input type="radio" id="louie" name="drone" value="louie" />
+            <input
+              type="radio"
+              class="maintenance-drone"
+              id="louie"
+              name="drone"
+              value="louie"
+            />
             <label for="louie">Louie</label>
           </div>
         </fieldset>

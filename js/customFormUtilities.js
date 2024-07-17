@@ -1,22 +1,23 @@
+/**
+ * Validates values of the form.
+ * @constructor
+ * @param {{fname:string, monsterFeatures:[],car:string, maintenanceDrones:[] }} values - The title of the book.
+ */
 export const validateForm = (values) => {
   const { fname, monsterFeatures, car, maintenanceDrones } = values;
   //cases which form shouldn't submit
   if (!fname || fname?.length === 0) {
-    console.log("line17");
     return false;
   }
 
   if (!monsterFeatures || monsterFeatures?.length === 0) {
-    console.log("line22");
     return false;
   }
 
   if (!car) {
-    console.log("line28");
     return false;
   }
   if (!maintenanceDrones || maintenanceDrones?.length === 0) {
-    console.log("line33");
     return false;
   }
 
@@ -46,11 +47,25 @@ export const parseValues = (values) => {
     maintenanceDronesArray = [];
   }
 
-  console.log("@line62");
   return {
     fname,
     monsterFeaturesArray,
     car,
     maintenanceDronesArray,
   };
+};
+
+export const sendEventWithDataToParentComponent = (
+  parsedValues,
+  customForm
+) => {
+  customForm.parentNode.parentNode
+    .querySelector("data-displayer")
+    .dispatchEvent(
+      new CustomEvent("fillDataInDataDisplayer", {
+        detail: parsedValues,
+        bubbles: true,
+        composed: true,
+      })
+    );
 };

@@ -54,7 +54,7 @@ class DataDisplayer extends LitElement {
 
   render() {
     return html`
-      <table>
+      <table id="data-displayer">
         <thead>
           <tr>
             <th>First Name</th>

@@ -1,7 +1,7 @@
 /**
  * Validates values of the form.
  * @constructor
- * @param {{fname:string, monsterFeatures:[],car:string, maintenanceDrones:[] }} values - The title of the book.
+ * @param {{fname:string, monsterFeatures:[],car:string, maintenanceDrones:[] }} values -The values from the form
  */
 export const validateForm = (values) => {
   const { fname, monsterFeatures, car, maintenanceDrones } = values;
@@ -23,7 +23,11 @@ export const validateForm = (values) => {
 
   return true;
 };
-
+/**
+ * Parses values of the form.
+ * @constructor
+ * @param {{fname:string, monsterFeatures:[],car:string, maintenanceDrones:[] }} values - The values from the form
+ */
 export const parseValues = (values) => {
   const { fname, monsterFeatures, car, maintenanceDrones } = values;
   let monsterFeaturesArray;
@@ -55,10 +59,18 @@ export const parseValues = (values) => {
   };
 };
 
+/**
+ * Sends values of the form.
+ * @constructor
+ * @param {{fname:string, monsterFeaturesArray:[],car:string, maintenanceDronesArray:[] }} parsedValues - The values from the form after being parsed
+ * @param customForm - The instance of the CustomForm
+ */
 export const sendEventWithDataToParentComponent = (
   parsedValues,
   customForm
 ) => {
+  //in here we access the parent of parent component to trigger its listeer
+  // it is the data-displayer component (DataDisplayer.js )
   customForm.parentNode.parentNode
     .querySelector("data-displayer")
     .dispatchEvent(
@@ -68,4 +80,13 @@ export const sendEventWithDataToParentComponent = (
         composed: true,
       })
     );
+};
+
+export const closeParentModal = (customForm) => {
+  customForm.parentNode.dispatchEvent(
+    new CustomEvent("forceCloseModal", {
+      bubbles: true,
+      composed: true,
+    })
+  );
 };

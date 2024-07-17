@@ -5,10 +5,12 @@ import {
 } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
 import {
+  closeParentModal,
   parseValues,
   sendEventWithDataToParentComponent,
   validateForm,
 } from "./customFormUtilities.js";
+import { sleepImitator } from "./utilities.js";
 
 class CustomForm extends LitElement {
   static styles = css`
@@ -26,6 +28,12 @@ class CustomForm extends LitElement {
       margin-top: 8px;
     }
   `;
+
+  static get properties() {
+    return {
+      isLoading: { state: true },
+    };
+  }
 
   _validateFormAndGetValuesOfFormAndSendData = () => {
     //we take all the values from the form. Then we perform some
@@ -70,12 +78,17 @@ class CustomForm extends LitElement {
   };
 
   _triggerSubmitOfForm = () => {
-    this.shadowRoot.getElementById("myForm").submit();
+    this.shadowRoot.getElementById("myForm").requestSubmit();
   };
 
-  _submitForm = (e) => {
+  _submitForm = async (e) => {
+    this.isLoading = true;
     e.preventDefault();
+    await sleepImitator();
     this._validateFormAndGetValuesOfFormAndSendData();
+
+    this.isLoading = false;
+    closeParentModal(this);
     return true;
   };
 
@@ -93,11 +106,13 @@ class CustomForm extends LitElement {
   constructor(props) {
     super(props);
     this.addEventListener("submitForm", this._triggerSubmitOfForm);
-    this.addEventListener("clearForm", this._clearForm.bind(this));
+    this.addEventListener("clearForm", this._clearForm);
+    this.isLoading = false;
   }
 
   render() {
     return html`
+      ${this.isLoading ? html` <custom-spinner></custom-spinner>` : ""}
       <form
         @click="${() => {
           this.dispatchEvent(this.disableClosingOfSurroundingModal);

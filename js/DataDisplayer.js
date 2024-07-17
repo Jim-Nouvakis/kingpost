@@ -8,9 +8,9 @@ class DataDisplayer extends LitElement {
   static get properties() {
     return {
       fname: { state: true },
-      monsterFeature: { state: true },
+      monsterFeatures: { state: true },
       car: { state: true },
-      maintenanceDrone: { state: true },
+      maintenanceDrones: { state: true },
     };
   }
 
@@ -41,7 +41,10 @@ class DataDisplayer extends LitElement {
   `;
 
   _receiveDataAndFillTheStateValues = (e) => {
-    console.log(e);
+    this.fname = e.detail.fname;
+    this.monsterFeatures = e.detail.monsterFeaturesArray;
+    this.car = e.detail.car;
+    this.maintenanceDrones = e.detail.maintenanceDronesArray;
   };
 
   constructor() {
@@ -65,10 +68,10 @@ class DataDisplayer extends LitElement {
         </thead>
         <tbody>
           <tr>
-            <td>Value 1</td>
-            <td>Value 2</td>
-            <td>Value 3</td>
-            <td>Value 4</td>
+            <td>${this.fname}</td>
+            <td>${this.monsterFeatures?.toString()}</td>
+            <td>${this.car}</td>
+            <td>${this.maintenanceDrones}</td>
           </tr>
         </tbody>
       </table>

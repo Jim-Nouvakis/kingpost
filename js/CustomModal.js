@@ -3,18 +3,7 @@ import {
   html,
   css,
 } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
-
-const resetForm = (customModal) => {
-  //we target the slots inside CustomModal, and
-  // we dispatch the event with name clearForm. This way the listener
-  // inside CustomForm, will be triggered
-  const slottedElements = customModal.shadowRoot
-    .querySelector("slot")
-    .assignedElements();
-  slottedElements.forEach((element) =>
-    element.dispatchEvent(new Event("clearForm"))
-  );
-};
+import { resetForm, submitForm } from "./customModalUtilities.js";
 
 /**
  * Custom Modal Component
@@ -59,6 +48,11 @@ class CustomModal extends LitElement {
       padding: 8px;
     }
 
+    #actions {
+      margin-top: 16px;
+      display: flex;
+    }
+
     .visible {
       transition: all 500ms;
       opacity: 1;
@@ -70,6 +64,28 @@ class CustomModal extends LitElement {
       transition: all 500ms;
 
       opacity: 0;
+    }
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      min-width: 100px;
+      min-height: 56px;
+      padding: 2px;
+      border-color: black;
+      border-style: solid;
+      border-radius: 4px;
+      margin: 0 4px;
+      font-weight: bold;
+      background: aliceblue;
+      transition: ease-in 100ms;
+    }
+
+    button:hover {
+      scale: 1.1;
+      transition: ease-in 100ms;
     }
   `;
 
@@ -94,6 +110,10 @@ class CustomModal extends LitElement {
   };
   _enableModalCanClose = () => {
     this.canModalClose = true;
+  };
+
+  _onAcceptButtonPressed = () => {
+    submitForm(this);
   };
 
   constructor() {
@@ -122,10 +142,15 @@ class CustomModal extends LitElement {
           <slot></slot>
         </section>
         <section id="actions">
-          <slot></slot>
+          <button id="cancel-button" @click="${this._forceCloseModal}">
+            Cancel
+          </button>
+          <button id="accept-button" @click="${this._onAcceptButtonPressed}">
+            Accept
+          </button>
         </section>
       </div>
-      <button @click="${this._openModal}">Hello</button>
+      <button @click="${this._openModal}">PRESS MEEEE</button>
     `;
   }
 }

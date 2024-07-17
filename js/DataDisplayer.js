@@ -34,10 +34,6 @@ class DataDisplayer extends LitElement {
       background-color: #e2e8fc;
       color: #2a2c3e;
     }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
   `;
 
   _receiveDataAndFillTheStateValues = (e) => {

@@ -33,7 +33,7 @@ class CustomForm extends LitElement {
 
   static get properties() {
     return {
-      isLoading: { state: true },
+      _isLoading: { state: true },
     };
   }
 
@@ -84,11 +84,11 @@ class CustomForm extends LitElement {
   };
 
   _submitForm = async (e) => {
-    this.isLoading = true;
+    this._isLoading = true;
     e.preventDefault();
     await sleepImitator();
     this._validateFormAndGetValuesOfFormAndSendData();
-    this.isLoading = false;
+    this._isLoading = false;
     closeParentModal(this);
     return true;
   };
@@ -102,12 +102,12 @@ class CustomForm extends LitElement {
     super(props);
     this.addEventListener("submitForm", this._triggerSubmitOfForm);
     this.addEventListener("clearForm", this._clearForm);
-    this.isLoading = false;
+    this._isLoading = false;
   }
 
   render() {
     return html`
-      ${this.isLoading ? html` <custom-spinner></custom-spinner>` : html``}
+      ${this._isLoading ? html` <custom-spinner></custom-spinner>` : html``}
       <form
         @click="${() => {
           this.dispatchEvent(disableClosingOfSurroundingModal);

@@ -7,10 +7,10 @@ import {
 class DataDisplayer extends LitElement {
   static get properties() {
     return {
-      fname: { state: true },
-      monsterFeatures: { state: true },
-      car: { state: true },
-      maintenanceDrones: { state: true },
+      _fname: { state: true },
+      _monsterFeatures: { state: true },
+      _car: { state: true },
+      _maintenanceDrones: { state: true },
     };
   }
 
@@ -37,10 +37,10 @@ class DataDisplayer extends LitElement {
   `;
 
   _receiveDataAndFillTheStateValues = (e) => {
-    this.fname = e.detail.fname;
-    this.monsterFeatures = e.detail.monsterFeaturesArray;
-    this.car = e.detail.car;
-    this.maintenanceDrones = e.detail.maintenanceDronesArray;
+    this._fname = e.detail.fname;
+    this._monsterFeatures = e.detail.monsterFeaturesArray;
+    this._car = e.detail.car;
+    this._maintenanceDrones = e.detail.maintenanceDronesArray;
   };
 
   constructor() {
@@ -58,16 +58,16 @@ class DataDisplayer extends LitElement {
           <tr>
             <th>First Name</th>
             <th>Monster Features</th>
-            <th>Car</th>
+            <th>_car</th>
             <th>Maintenance Drone</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>${this.fname}</td>
-            <td>${this.monsterFeatures?.toString()}</td>
-            <td>${this.car}</td>
-            <td>${this.maintenanceDrones}</td>
+            <td>${this._fname}</td>
+            <td>${this._monsterFeatures?.toString()}</td>
+            <td>${this._car}</td>
+            <td>${this._maintenanceDrones}</td>
           </tr>
         </tbody>
       </table>

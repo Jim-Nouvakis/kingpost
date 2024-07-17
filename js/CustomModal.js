@@ -11,15 +11,15 @@ import { resetForm, submitForm } from "./customModalUtilities.js";
  * Thw modal has 5 listeners assigned to it, so it can be called from outside components.
  * Open Modal => event name 'openModal'
  * Close Modal if possible based on modal can close property => event name 'closeModalIfPossible'
- * Force Close Modal, which doesn't take into account the canModalClose property => event name 'forceCloseModal'
+ * Force Close Modal, which doesn't take into account the _canModalClose property => event name 'forceCloseModal'
  * Disable the ability of Modal to close => event name 'disableClosingOfModal'
  * Enable the ability of Modal to close => event name 'enableClosingOfModal'
  */
 class CustomModal extends LitElement {
   static get properties() {
     return {
-      isModalOpen: { state: true },
-      canModalClose: { state: true },
+      _isModalOpen: { state: true },
+      _canModalClose: { state: true },
     };
   }
 
@@ -96,7 +96,7 @@ class CustomModal extends LitElement {
   `;
 
   _closeModalIfPossible = () => {
-    if (this.canModalClose) {
+    if (this._canModalClose) {
       this._forceCloseModal();
     }
   };
@@ -105,18 +105,18 @@ class CustomModal extends LitElement {
     resetForm(this);
     //end of functions
 
-    this.isModalOpen = false;
-    this.canModalClose = true;
+    this._isModalOpen = false;
+    this._canModalClose = true;
   };
   _openModal = () => {
-    this.isModalOpen = true;
+    this._isModalOpen = true;
   };
 
   _disableModalCanClose = () => {
-    this.canModalClose = false;
+    this._canModalClose = false;
   };
   _enableModalCanClose = () => {
-    this.canModalClose = true;
+    this._canModalClose = true;
   };
 
   _onAcceptButtonPressed = () => {
@@ -125,8 +125,8 @@ class CustomModal extends LitElement {
 
   constructor() {
     super();
-    this.isModalOpen = false;
-    this.canModalClose = true;
+    this._isModalOpen = false;
+    this._canModalClose = true;
     this.addEventListener("closeModal", this._closeModalIfPossible);
     this.addEventListener("forceCloseModal", this._forceCloseModal);
     this.addEventListener("openModal", this._openModal);
@@ -139,9 +139,9 @@ class CustomModal extends LitElement {
       <div
         @click="${this._closeModalIfPossible}"
         id="backdrop"
-        class="${this.isModalOpen ? "visible" : "hidden"}"
+        class="${this._isModalOpen ? "visible" : "hidden"}"
       ></div>
-      <div id="modal" class="${this.isModalOpen ? "visible" : "hidden"}">
+      <div id="modal" class="${this._isModalOpen ? "visible" : "hidden"}">
         <header>
           <slot></slot>
         </header>

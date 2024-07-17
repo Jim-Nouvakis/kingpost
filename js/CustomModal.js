@@ -107,6 +107,7 @@ class CustomModal extends LitElement {
     //end of functions
 
     this.isModalOpen = false;
+    this.canModalClose = true;
   };
   _openModal = () => {
     this.isModalOpen = true;

@@ -90,3 +90,11 @@ export const closeParentModal = (customForm) => {
     })
   );
 };
+
+export const disableClosingOfSurroundingModal = new Event(
+  "disableClosingOfModal",
+  {
+    bubbles: true,
+    composed: true,
+  }
+);

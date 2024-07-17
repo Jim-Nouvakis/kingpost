@@ -6,10 +6,12 @@ import {
 
 import {
   closeParentModal,
+  disableClosingOfSurroundingModal,
   parseValues,
   sendEventWithDataToParentComponent,
   validateForm,
 } from "./customFormUtilities.js";
+
 import { sleepImitator } from "./utilities.js";
 
 class CustomForm extends LitElement {
@@ -86,7 +88,6 @@ class CustomForm extends LitElement {
     e.preventDefault();
     await sleepImitator();
     this._validateFormAndGetValuesOfFormAndSendData();
-
     this.isLoading = false;
     closeParentModal(this);
     return true;
@@ -97,11 +98,6 @@ class CustomForm extends LitElement {
     form.reset();
   };
 
-  disableClosingOfSurroundingModal = new Event("disableClosingOfModal", {
-    bubbles: true,
-    composed: true,
-  });
-
   constructor(props) {
     super(props);
     this.addEventListener("submitForm", this._triggerSubmitOfForm);
@@ -111,10 +107,10 @@ class CustomForm extends LitElement {
 
   render() {
     return html`
-      ${this.isLoading ? html` <custom-spinner></custom-spinner>` : ""}
+      ${this.isLoading ? html` <custom-spinner></custom-spinner>` : html``}
       <form
         @click="${() => {
-          this.dispatchEvent(this.disableClosingOfSurroundingModal);
+          this.dispatchEvent(disableClosingOfSurroundingModal);
         }}"
         @submit="${this._submitForm}"
         id="myForm"
@@ -155,7 +151,6 @@ class CustomForm extends LitElement {
         </select>
         <fieldset id="maintenance-drones">
           <legend>Select a maintenance drone:</legend>
-
           <div>
             <input
               class="maintenance-drone"

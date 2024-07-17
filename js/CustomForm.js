@@ -93,7 +93,6 @@ class CustomForm extends LitElement {
   };
 
   _clearForm = () => {
-    console.log("here");
     const form = this.shadowRoot.getElementById("myForm");
     form.reset();
   };

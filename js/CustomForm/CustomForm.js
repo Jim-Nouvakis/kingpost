@@ -12,7 +12,7 @@ import {
   validateForm,
 } from "./customFormUtilities.js";
 
-import { sleepImitator } from "./utilities.js";
+import { sleepImitator } from "../utilities.js";
 
 class CustomForm extends LitElement {
   static styles = css`
